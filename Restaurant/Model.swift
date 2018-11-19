@@ -7,8 +7,50 @@
 //
 
 import Foundation
+import UIKit
 
-var menu: [Dish] = []
+var isTableViewShown: Bool = false
+
+var menu: [Dish] {
+    let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] + "/data.json"
+    let urlPath = URL(fileURLWithPath: path)
+    
+    // Получение бинарных данных типа Data из файла по пути urlPath, где хранится json-объект типа Data.
+    let dataFromURLPath = try? Data(contentsOf: urlPath)
+    guard let data = dataFromURLPath else { return [] }
+    
+    let jsonDecoder = JSONDecoder()
+    let menuDictionary: Menu?
+    
+    do {
+        menuDictionary = try jsonDecoder.decode(Menu.self, from: data)
+        
+        guard let menuDictionary = menuDictionary else { return [] }
+        let returnArray = menuDictionary.items
+        
+        print("Распарсенные данные: \(menuDictionary as Any)")
+        
+        return returnArray
+    } catch {
+        print("Не удалось распарсить данные. Неверные данные: \(error.localizedDescription)")
+    }
+    
+    return []
+}
+
+var images: [String: UIImage] {
+    guard let dictionaryOfDataImages = UserDefaults.standard.object(forKey: "ImagesOfDishes") as? [String: Data] else { return [:] }
+    
+    var returnDictionary: Dictionary<String, UIImage> = [:]
+    
+    for item in dictionaryOfDataImages {
+        if let image = UIImage(data: item.value) {
+            returnDictionary["\(item.key)"] = image
+        }
+    }
+    
+    return returnDictionary
+}
 
 struct Menu: Decodable {
     var items: [Dish]
@@ -46,17 +88,25 @@ struct Dish: Decodable {
 class Model {
     static let shared = Model()
     
-    func loadData() {
+//    var delegate: // Для отображения Alert'ов.
+    
+    func loadData(completionHandler: (() -> Void)?) {
         let urlString = "http://api.armenu.net:8090/menu"
 
         guard let url = URL(string: urlString) else {
+//            delegate // Неверный URL-адрес
+            
             print("Неверный URL")
             return
         }
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else {
-                print("Неверные данные, пришедшие с сервера")
+                completionHandler?()
+                
+//                delegate // Нет интернета
+                
+                print("Нет соединения с Интернетом")
                 return
             }
             
@@ -70,22 +120,24 @@ class Model {
             
             do {
                 try data.write(to: urlForSave) // Запись содержимого буфера данных в файл по пути urlForSave.
-                
-                self.parseData()
             } catch {
                 print("Ошибка при записи данных в файл: \(error.localizedDescription)")
-                
-                self.parseData()
             }
+            
+            self.getImage()
+            
+            completionHandler?()
         }
         task.resume()
     }
     
-    func parseData() {
+    func getImage() {
+        print("Поток для загрузки данных: \(Thread.current)")
+        
         let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] + "/data.json"
         let urlPath = URL(fileURLWithPath: path)
         
-        // Получение бинарных данных типа Data из файла по пути urlPath, где хранится json-объект типа json.
+        // Получение бинарных данных типа Data из файла по пути urlPath, где хранится json-объект типа Data.
         let dataFromURLPath = try? Data(contentsOf: urlPath)
         guard let data = dataFromURLPath else { return }
         
@@ -96,12 +148,32 @@ class Model {
             menuDictionary = try jsonDecoder.decode(Menu.self, from: data)
             
             guard let menuDictionary = menuDictionary else { return }
-            menu = menuDictionary.items
+            let loadArray = menuDictionary.items
+            var dictionaryOfDataImage: [String: Data] = [:]
             
-            print("Распарсенные данные: \(menuDictionary as Any)")
-            print("Меню: \(menu); Блюд в меню - \(menu.count)")
+            for dish in loadArray {
+                guard let url = URL(string: dish.imageUrl) else {
+//                    delegate
+                    
+                    print("Неверный URL")
+                    return
+                }
+                
+                do {
+                    let data = try Data(contentsOf: url.withHost(host: "api.armenu.net")!) // как URLSession.
+                    print("Поток для загрузки картинок: \(Thread.current)")
+                    dictionaryOfDataImage["\(dish.name)"] = data
+                } catch {
+                    print("Не удалось получить данные: \(error.localizedDescription)")
+                }
+                
+                print("Распарсенные картинки в словаре картинок: \(dictionaryOfDataImage.count)")
+                
+                UserDefaults.standard.set(dictionaryOfDataImage, forKey: "ImagesOfDishes")
+                UserDefaults.standard.synchronize()
+            }
         } catch {
-            print(error.localizedDescription)
+            print("Не удалось распарсить данные. Неверные данные: \(error.localizedDescription)")
         }
     }
 }
