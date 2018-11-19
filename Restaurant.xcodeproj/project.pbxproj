@@ -8,20 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		39FD3A2621A1E7EB0033C390 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD3A2521A1E7EB0033C390 /* AppDelegate.swift */; };
-		39FD3A2821A1E7EB0033C390 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD3A2721A1E7EB0033C390 /* ViewController.swift */; };
 		39FD3A2B21A1E7EB0033C390 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39FD3A2921A1E7EB0033C390 /* Main.storyboard */; };
 		39FD3A2D21A1E7EB0033C390 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39FD3A2C21A1E7EB0033C390 /* Assets.xcassets */; };
 		39FD3A3021A1E7EB0033C390 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39FD3A2E21A1E7EB0033C390 /* LaunchScreen.storyboard */; };
+		39FD3A3821A1E8040033C390 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD3A3721A1E8040033C390 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		39FD3A2221A1E7EB0033C390 /* Restaurant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Restaurant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39FD3A2521A1E7EB0033C390 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		39FD3A2721A1E7EB0033C390 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		39FD3A2A21A1E7EB0033C390 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		39FD3A2C21A1E7EB0033C390 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		39FD3A2F21A1E7EB0033C390 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39FD3A3121A1E7EB0033C390 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39FD3A3721A1E8040033C390 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				39FD3A2521A1E7EB0033C390 /* AppDelegate.swift */,
-				39FD3A2721A1E7EB0033C390 /* ViewController.swift */,
+				39FD3A3721A1E8040033C390 /* Model.swift */,
 				39FD3A2921A1E7EB0033C390 /* Main.storyboard */,
 				39FD3A2C21A1E7EB0033C390 /* Assets.xcassets */,
 				39FD3A2E21A1E7EB0033C390 /* LaunchScreen.storyboard */,
@@ -135,8 +135,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39FD3A2821A1E7EB0033C390 /* ViewController.swift in Sources */,
 				39FD3A2621A1E7EB0033C390 /* AppDelegate.swift in Sources */,
+				39FD3A3821A1E8040033C390 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,7 +289,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Timur.Restaurant;
+				PRODUCT_BUNDLE_IDENTIFIER = TimurSaidov.Restaurant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -307,7 +307,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Timur.Restaurant;
+				PRODUCT_BUNDLE_IDENTIFIER = TimurSaidov.Restaurant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
