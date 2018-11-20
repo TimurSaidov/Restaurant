@@ -12,12 +12,33 @@ class DetailViewController: UIViewController {
     
     var dish: Dish?
     var imagesDictionary: [String: UIImage]?
+    var countStepperValue: Int = 0
+    var count: Int = 1
+    var price: Int = 0
     
     @IBOutlet weak var dishImageView: UIImageView!
     @IBOutlet weak var dishNameLabel: UILabel!
     @IBOutlet weak var dishPriceLabel: UILabel!
     @IBOutlet weak var dishDescriptionTextView: UITextView!
+    @IBOutlet weak var countLabel: UILabel!
+    @IBOutlet weak var countStepper: UIStepper!
     @IBOutlet weak var addToOrderButton: UIButton!
+    
+    @IBAction func addCountButton(_ sender: UIStepper) {
+        if Int(countStepper.value) > countStepperValue { // Если нажат "+", то countStepper.value += 1; если нажат "-", то countStepper.value -= 1
+            count += 1
+            countLabel.text = "\(count) p."
+            price += dish!.price
+            dishPriceLabel.text = "\(Double(price)) $"
+            countStepperValue += 1
+        } else {
+            count -= 1
+            countLabel.text = "\(count) p."
+            price -= dish!.price
+            dishPriceLabel.text = "\(Double(price)) $"
+            countStepperValue -= 1
+        }
+    }
     
     @IBAction func addToOrderButtonPressed(_ sender: UIButton) {
         UIView.animate(withDuration: 0.3) {
@@ -38,7 +59,8 @@ class DetailViewController: UIViewController {
                 dishImageView.image = imagesDictionary["\(dish.name)"]
             }
             dishNameLabel.text = dish.name
-            dishPriceLabel.text = "\(Double(dish.price)) $" // String(format: "$%.2f", dish.price)
+            price = dish.price
+            dishPriceLabel.text = "\(Double(price)) $" // String(format: "$%.2f", price)
             dishDescriptionTextView.text = dish.description
         }
     }

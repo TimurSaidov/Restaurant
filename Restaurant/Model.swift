@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-var isTableViewShown: Bool = false
-
 var menu: [Dish] {
     let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] + "/data.json"
     let urlPath = URL(fileURLWithPath: path)
@@ -53,6 +51,27 @@ var images: [String: UIImage] {
     
     return returnDictionary
 }
+
+//{
+//    "items" : [
+//    {
+//    "description" : "Seasoned meatballs on top of freshly-made spaghetti. Served with a robust tomato sauce.",
+//    "name" : "Spaghetti and Meatballs",
+//    "image_url" : "http:\/\/localhost:8090\/images\/SpaghettiAndMeatballs.jpg",
+//    "id" : 1,
+//    "price" : 9,
+//    "category" : "entrees"
+//    },
+//    {
+//    "description" : "Tomato sauce, fresh mozzarella, basil, and extra-virgin olive oil.",
+//    "name" : "Margherita Pizza",
+//    "image_url" : "http:\/\/localhost:8090\/images\/MargheritaPizza.jpg",
+//    "id" : 2,
+//    "price" : 10,
+//    "category" : "entrees"
+//    }
+//    ]
+//}
 
 struct Menu: Decodable {
     var items: [Dish]
