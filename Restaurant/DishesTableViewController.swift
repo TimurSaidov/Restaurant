@@ -68,6 +68,7 @@ class DishesTableViewController: UITableViewController {
                 if let menu = menu {
                     let dish = menu[indexPath.row]
                     dvc.dish = dish
+                    dvc.imagesDictionary = imagesDictionary
                     dvc.navigationItem.title = dish.name
                 }
             }
