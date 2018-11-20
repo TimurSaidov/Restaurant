@@ -12,6 +12,8 @@ class CategoriesTableViewController: UITableViewController {
     
     var isTableViewShown: Bool = false
     let categories: [String] = ["Appetizers", "Entrees"]
+    var menuArray: [Dish]?
+    var imagesDictionary: [String: UIImage]?
     
     let activityIndicator = UIActivityIndicatorView(style: .gray)
     
@@ -21,6 +23,8 @@ class CategoriesTableViewController: UITableViewController {
         
         Model.shared.loadData {
             DispatchQueue.main.async {
+                self.menuArray = menu
+                self.imagesDictionary = images
                 self.isTableViewShown = true
                 self.refreshControl?.endRefreshing()
                 self.tableView.reloadData()
@@ -38,6 +42,8 @@ class CategoriesTableViewController: UITableViewController {
         
         Model.shared.loadData {
             DispatchQueue.main.async {
+                self.menuArray = menu
+                self.imagesDictionary = images
                 self.activityIndicator.stopAnimating()
                 self.activityIndicator.isHidden = true
                 self.isTableViewShown = true
@@ -69,29 +75,33 @@ class CategoriesTableViewController: UITableViewController {
         var appetizers: Dish?
         var entrees: Dish?
 
-        for item in menu {
-            if item.category == "appetizers" {
-                appetizers = item
-                break
+        if let menuArray = menuArray {
+            for item in menuArray {
+                if item.category == "appetizers" {
+                    appetizers = item
+                    break
+                }
             }
-        }
-        for item in menu {
-            if item.category == "entrees" {
-                entrees = item
-                break
+            for item in menuArray {
+                if item.category == "entrees" {
+                    entrees = item
+                    break
+                }
             }
         }
         
         cell.nameCategoryLabel.text = categories[indexPath.row]
 
-        if let appetizers = appetizers, let entrees = entrees {
-            if cell.nameCategoryLabel.text == "Appetizers" {
-                cell.imageViewCategory.image = images["\(appetizers.name)"]
-            } else if cell.nameCategoryLabel.text == "Entrees" {
-                cell.imageViewCategory.image = images["\(entrees.name)"]
+        if let imagesDictionary = imagesDictionary {
+            if let appetizers = appetizers, let entrees = entrees {
+                if cell.nameCategoryLabel.text == "Appetizers" {
+                    cell.imageViewCategory.image = imagesDictionary["\(appetizers.name)"]
+                } else if cell.nameCategoryLabel.text == "Entrees" {
+                    cell.imageViewCategory.image = imagesDictionary["\(entrees.name)"]
+                }
             }
         }
-        
+            
         cell.viewCategoryCell.layer.cornerRadius = cell.frame.height / 2
         cell.imageViewCategory.layer.cornerRadius = cell.imageViewCategory.frame.height / 2
         cell.imageViewCategory.clipsToBounds = true
@@ -113,23 +123,27 @@ class CategoriesTableViewController: UITableViewController {
                 
                 var menuForIndexPath: [Dish] = []
                 
+                guard let menuArray = menuArray else { return }
+                
                 switch indexPath {
                 case [0, 0]:
-                    for dish in menu {
+                    for dish in menuArray {
                         if dish.category == "appetizers" {
                             menuForIndexPath.append(dish)
                         }
                     }
                     dvc.menu = menuForIndexPath
                     dvc.navigationItem.title = "Appetizers"
+                    dvc.imagesDictionary = imagesDictionary
                 case [0, 1]:
-                    for dish in menu {
+                    for dish in menuArray {
                         if dish.category == "entrees" {
                             menuForIndexPath.append(dish)
                         }
                     }
                     dvc.menu = menuForIndexPath
                     dvc.navigationItem.title = "Entrees"
+                    dvc.imagesDictionary = imagesDictionary
                 default:
                     break
                 }

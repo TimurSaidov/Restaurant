@@ -11,6 +11,7 @@ import UIKit
 class DishesTableViewController: UITableViewController {
     
     var menu: [Dish]?
+    var imagesDictionary: [String: UIImage]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,11 +39,11 @@ class DishesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DishCell", for: indexPath) as! DishesTableViewCell
 
-        guard let menu = menu  else { return cell }
+        guard let menu = menu, let imagesDictionary = imagesDictionary else { return cell }
         
         let dish = menu[indexPath.row]
         
-        cell.dishesImageView.image = images["\(dish.name)"]
+        cell.dishesImageView.image = imagesDictionary["\(dish.name)"]
         cell.dishesNameLabel.text = dish.name
         cell.dishesPriceLabel.text = "\(Double(dish.price)) $"
         
@@ -64,10 +65,11 @@ class DishesTableViewController: UITableViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
                 guard let dvc = segue.destination as? DetailViewController else { return }
                 
-                let dish = menu![indexPath.row]
-                
-                dvc.dish = dish
-                dvc.navigationItem.title = dish.name
+                if let menu = menu {
+                    let dish = menu[indexPath.row]
+                    dvc.dish = dish
+                    dvc.navigationItem.title = dish.name
+                }
             }
         }
     }

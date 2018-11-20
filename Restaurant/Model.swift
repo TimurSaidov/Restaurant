@@ -28,7 +28,7 @@ var menu: [Dish] {
         guard let menuDictionary = menuDictionary else { return [] }
         let returnArray = menuDictionary.items
         
-        print("Распарсенные данные: \(menuDictionary as Any)")
+        print("Загруженные из файла и распарсенные данные: \(menuDictionary as Any)")
         
         return returnArray
     } catch {
@@ -48,6 +48,8 @@ var images: [String: UIImage] {
             returnDictionary["\(item.key)"] = image
         }
     }
+    
+    print("Загруженный из UserDefaults и распарсенный словарь картинок: \(returnDictionary)")
     
     return returnDictionary
 }
