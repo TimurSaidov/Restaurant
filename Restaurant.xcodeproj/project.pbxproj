@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39DCDDA821A3253700B434E6 /* CategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DCDDA721A3253700B434E6 /* CategoriesTableViewController.swift */; };
+		39FB849421A4219400C3BD98 /* CategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FB849321A4219400C3BD98 /* CategoriesTableViewCell.swift */; };
+		39FB849621A42EA700C3BD98 /* DishesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FB849521A42EA700C3BD98 /* DishesTableViewController.swift */; };
+		39FB849821A42EC300C3BD98 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FB849721A42EC300C3BD98 /* DetailViewController.swift */; };
+		39FB849A21A4389900C3BD98 /* DishesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FB849921A4389900C3BD98 /* DishesTableViewCell.swift */; };
 		39FD3A2621A1E7EB0033C390 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FD3A2521A1E7EB0033C390 /* AppDelegate.swift */; };
 		39FD3A2B21A1E7EB0033C390 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39FD3A2921A1E7EB0033C390 /* Main.storyboard */; };
 		39FD3A2D21A1E7EB0033C390 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39FD3A2C21A1E7EB0033C390 /* Assets.xcassets */; };
@@ -15,6 +20,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		39DCDDA721A3253700B434E6 /* CategoriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewController.swift; sourceTree = "<group>"; };
+		39FB849321A4219400C3BD98 /* CategoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewCell.swift; sourceTree = "<group>"; };
+		39FB849521A42EA700C3BD98 /* DishesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DishesTableViewController.swift; sourceTree = "<group>"; };
+		39FB849721A42EC300C3BD98 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		39FB849921A4389900C3BD98 /* DishesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DishesTableViewCell.swift; sourceTree = "<group>"; };
 		39FD3A2221A1E7EB0033C390 /* Restaurant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Restaurant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39FD3A2521A1E7EB0033C390 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39FD3A2A21A1E7EB0033C390 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -56,6 +66,11 @@
 			children = (
 				39FD3A2521A1E7EB0033C390 /* AppDelegate.swift */,
 				39FD3A3721A1E8040033C390 /* Model.swift */,
+				39DCDDA721A3253700B434E6 /* CategoriesTableViewController.swift */,
+				39FB849321A4219400C3BD98 /* CategoriesTableViewCell.swift */,
+				39FB849521A42EA700C3BD98 /* DishesTableViewController.swift */,
+				39FB849921A4389900C3BD98 /* DishesTableViewCell.swift */,
+				39FB849721A42EC300C3BD98 /* DetailViewController.swift */,
 				39FD3A2921A1E7EB0033C390 /* Main.storyboard */,
 				39FD3A2C21A1E7EB0033C390 /* Assets.xcassets */,
 				39FD3A2E21A1E7EB0033C390 /* LaunchScreen.storyboard */,
@@ -135,7 +150,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39DCDDA821A3253700B434E6 /* CategoriesTableViewController.swift in Sources */,
+				39FB849421A4219400C3BD98 /* CategoriesTableViewCell.swift in Sources */,
 				39FD3A2621A1E7EB0033C390 /* AppDelegate.swift in Sources */,
+				39FB849821A42EC300C3BD98 /* DetailViewController.swift in Sources */,
+				39FB849621A42EA700C3BD98 /* DishesTableViewController.swift in Sources */,
+				39FB849A21A4389900C3BD98 /* DishesTableViewCell.swift in Sources */,
 				39FD3A3821A1E8040033C390 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

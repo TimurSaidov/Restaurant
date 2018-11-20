@@ -116,7 +116,7 @@ class Model {
             
             let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] + "/data.json"
             let urlForSave = URL(fileURLWithPath: path)
-            print(urlForSave)
+            print("URL файла data.json - \(urlForSave)")
             
             do {
                 try data.write(to: urlForSave) // Запись содержимого буфера данных в файл по пути urlForSave.
@@ -132,13 +132,13 @@ class Model {
     }
     
     func getImage() {
-        print("Поток для загрузки данных: \(Thread.current)")
+        print("Поток, где загружаются данные (функция loadData): \(Thread.current)")
         
         let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.libraryDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] + "/data.json"
         let urlPath = URL(fileURLWithPath: path)
         
         // Получение бинарных данных типа Data из файла по пути urlPath, где хранится json-объект типа Data.
-        let dataFromURLPath = try? Data(contentsOf: urlPath)
+        let dataFromURLPath = try? Data(contentsOf: urlPath) // Аналогична URLSession, отличие лишь в том, что Data(contentsOf:) не отправляется на фоновый поток, т.е. остается на вызывающем.
         guard let data = dataFromURLPath else { return }
         
         let jsonDecoder = JSONDecoder()
@@ -160,18 +160,18 @@ class Model {
                 }
                 
                 do {
-                    let data = try Data(contentsOf: url.withHost(host: "api.armenu.net")!) // как URLSession.
-                    print("Поток для загрузки картинок: \(Thread.current)")
+                    let data = try Data(contentsOf: url.withHost(host: "api.armenu.net")!)
+                    print("Поток, где загружаются картинки: \(Thread.current)")
                     dictionaryOfDataImage["\(dish.name)"] = data
                 } catch {
                     print("Не удалось получить данные: \(error.localizedDescription)")
                 }
-                
-                print("Распарсенные картинки в словаре картинок: \(dictionaryOfDataImage.count)")
-                
-                UserDefaults.standard.set(dictionaryOfDataImage, forKey: "ImagesOfDishes")
-                UserDefaults.standard.synchronize()
             }
+            
+            print("Распарсенные картинки в словаре картинок: \(dictionaryOfDataImage.count)")
+            
+            UserDefaults.standard.set(dictionaryOfDataImage, forKey: "ImagesOfDishes")
+            UserDefaults.standard.synchronize()
         } catch {
             print("Не удалось распарсить данные. Неверные данные: \(error.localizedDescription)")
         }
@@ -181,36 +181,21 @@ class Model {
 extension URL {
     func withQueries(_ query: [String: String]) -> URL? {
         var components = URLComponents(url: self, resolvingAgainstBaseURL: true)
-        print("Components: \(components! as Any)")
-        print("Components.queryItems: \(components!.queryItems as Any)")
         components?.queryItems = query.map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
-        print("NEW Components.queryItems: \(components!.queryItems! as Any)")
-        print("NEW Components: \(components! as Any)")
-        print("NEW Components.url: \(components!.url! as Any)")
         return components?.url
     }
     
     func withHTTPS() -> URL? {
         var components = URLComponents(url: self, resolvingAgainstBaseURL: true)
-        print("Components: \(components! as Any)")
-        print("Components.scheme: \(components!.scheme! as Any)")
         components?.scheme = "https"
-        print("NEW Components.scheme: \(components!.scheme! as Any)")
-        print("NEW Components: \(components! as Any)")
-        print("NEW Components.url: \(components!.url! as Any)")
         return components?.url
     }
     
     func withHost(host: String) -> URL? {
         var components = URLComponents(url: self, resolvingAgainstBaseURL: true)
-        print("Components: \(components! as Any)")
-        print("Components.host: \(components!.host! as Any)")
         components?.host = host
-        print("NEW Components.host: \(components!.host! as Any)")
-        print("NEW Components: \(components! as Any)")
-        print("NEW Components.url: \(components!.url! as Any)")
         return components?.url
     }
 }
