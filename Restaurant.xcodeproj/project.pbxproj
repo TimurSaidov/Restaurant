@@ -53,6 +53,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		393F6B9D21A5C17600286EB9 /* CoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				393F6B9821A5AB0900286EB9 /* CoreDataManager.swift */,
+				393F6B9A21A5ABD300286EB9 /* Restaurant.xcdatamodeld */,
+			);
+			path = CoreDataManager;
+			sourceTree = "<group>";
+		};
+		393F6B9E21A5C18200286EB9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				39FD3A3721A1E8040033C390 /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		393F6B9F21A5C1A000286EB9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				39DCDDA721A3253700B434E6 /* CategoriesTableViewController.swift */,
+				39FB849321A4219400C3BD98 /* CategoriesTableViewCell.swift */,
+				39FB849521A42EA700C3BD98 /* DishesTableViewController.swift */,
+				39FB849921A4389900C3BD98 /* DishesTableViewCell.swift */,
+				39FB849721A42EC300C3BD98 /* DetailViewController.swift */,
+				393F6B9621A5A30000286EB9 /* OrderViewController.swift */,
+				393F6B7421A5764200286EB9 /* OrderTableViewCell.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		39FD3A1921A1E7EB0033C390 = {
 			isa = PBXGroup;
 			children = (
@@ -73,17 +104,10 @@
 			isa = PBXGroup;
 			children = (
 				39FD3A2521A1E7EB0033C390 /* AppDelegate.swift */,
-				39FD3A3721A1E8040033C390 /* Model.swift */,
-				39DCDDA721A3253700B434E6 /* CategoriesTableViewController.swift */,
-				39FB849321A4219400C3BD98 /* CategoriesTableViewCell.swift */,
-				39FB849521A42EA700C3BD98 /* DishesTableViewController.swift */,
-				39FB849921A4389900C3BD98 /* DishesTableViewCell.swift */,
-				39FB849721A42EC300C3BD98 /* DetailViewController.swift */,
-				393F6B9621A5A30000286EB9 /* OrderViewController.swift */,
-				393F6B7421A5764200286EB9 /* OrderTableViewCell.swift */,
+				393F6B9D21A5C17600286EB9 /* CoreDataManager */,
+				393F6B9E21A5C18200286EB9 /* Model */,
+				393F6B9F21A5C1A000286EB9 /* Controllers */,
 				39FD3A2921A1E7EB0033C390 /* Main.storyboard */,
-				393F6B9821A5AB0900286EB9 /* CoreDataManager.swift */,
-				393F6B9A21A5ABD300286EB9 /* Restaurant.xcdatamodeld */,
 				39FD3A2C21A1E7EB0033C390 /* Assets.xcassets */,
 				39FD3A2E21A1E7EB0033C390 /* LaunchScreen.storyboard */,
 				39FD3A3121A1E7EB0033C390 /* Info.plist */,

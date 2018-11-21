@@ -11,7 +11,7 @@ import UIKit
 class DishesTableViewController: UITableViewController {
     
     var menu: [Dish]?
-    var imagesDictionary: [String: UIImage]?
+    var imagesDictionary: [String: Data]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,8 @@ class DishesTableViewController: UITableViewController {
         
         let dish = menu[indexPath.row]
         
-        cell.dishesImageView.image = imagesDictionary["\(dish.name)"]
+        let imageData = imagesDictionary["\(dish.name)"]
+        cell.dishesImageView.image = UIImage(data: imageData!)
         cell.dishesNameLabel.text = dish.name
         cell.dishesPriceLabel.text = "\(Double(dish.price)) $"
         

@@ -36,20 +36,20 @@ var menu: [Dish] {
     return []
 }
 
-var images: [String: UIImage] {
+var images: [String: Data] {
     guard let dictionaryOfDataImages = UserDefaults.standard.object(forKey: "ImagesOfDishes") as? [String: Data] else { return [:] }
     
-    var returnDictionary: Dictionary<String, UIImage> = [:]
+//    var returnDictionary: Dictionary<String, UIImage> = [:]
+//
+//    for item in dictionaryOfDataImages {
+//        if let image = UIImage(data: item.value) {
+//            returnDictionary["\(item.key)"] = image
+//        }
+//    }
     
-    for item in dictionaryOfDataImages {
-        if let image = UIImage(data: item.value) {
-            returnDictionary["\(item.key)"] = image
-        }
-    }
+    print("Загруженный из UserDefaults словарь картинок: \(dictionaryOfDataImages)")
     
-    print("Загруженный из UserDefaults и распарсенный словарь картинок: \(returnDictionary)")
-    
-    return returnDictionary
+    return dictionaryOfDataImages
 }
 
 //{

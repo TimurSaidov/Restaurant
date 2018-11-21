@@ -11,7 +11,7 @@ import UIKit
 class DetailViewController: UIViewController {
     
     var dish: Dish?
-    var imagesDictionary: [String: UIImage]?
+    var imagesDictionary: [String: Data]?
     var countStepperValue: Int = 0
     var dishCount: Int = 1
     var price: Int = 0
@@ -55,6 +55,8 @@ class DetailViewController: UIViewController {
         orderDish.price = Double(price)
         orderDish.category = dish.category
         orderDish.count = Double(dishCount)
+        let imageData = imagesDictionary!["\(dish.name)"]
+        orderDish.image = imageData
         
         CoreDataManager.shared.saveContext()
         
@@ -70,7 +72,8 @@ class DetailViewController: UIViewController {
 
         if let dish = dish {
             if let imagesDictionary = imagesDictionary {
-                dishImageView.image = imagesDictionary["\(dish.name)"]
+                let imageData = imagesDictionary["\(dish.name)"]
+                dishImageView.image = UIImage(data: imageData!)
             }
             dishNameLabel.text = dish.name
             price = dish.price

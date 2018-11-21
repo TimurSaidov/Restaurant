@@ -13,7 +13,7 @@ class CategoriesTableViewController: UITableViewController {
     var isTableViewShown: Bool = false
     let categories: [String] = ["Appetizers", "Entrees"]
     var menuArray: [Dish]?
-    var imagesDictionary: [String: UIImage]?
+    var imagesDictionary: [String: Data]?
     
     let activityIndicator = UIActivityIndicatorView(style: .gray)
     
@@ -95,9 +95,11 @@ class CategoriesTableViewController: UITableViewController {
         if let imagesDictionary = imagesDictionary {
             if let appetizers = appetizers, let entrees = entrees {
                 if cell.nameCategoryLabel.text == "Appetizers" {
-                    cell.imageViewCategory.image = imagesDictionary["\(appetizers.name)"]
+                    let imageData = imagesDictionary["\(appetizers.name)"]
+                    cell.imageViewCategory.image = UIImage(data: imageData!)
                 } else if cell.nameCategoryLabel.text == "Entrees" {
-                    cell.imageViewCategory.image = imagesDictionary["\(entrees.name)"]
+                    let imageData = imagesDictionary["\(entrees.name)"]
+                    cell.imageViewCategory.image = UIImage(data: imageData!)
                 }
             }
         }

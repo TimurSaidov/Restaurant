@@ -28,8 +28,6 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dictionaryOfDataImages = UserDefaults.standard.object(forKey: "ImagesOfDishes") as! [String: Data]
-        
         submitButton.layer.cornerRadius = 5
         
         tableView.tableFooterView = UIView(frame: CGRect.zero)
@@ -79,8 +77,7 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         let orderDish = orderDishes[indexPath.row]
         
-        let imageData = dictionaryOfDataImages["\(orderDish.name!)"]
-        cell.orderImageView.image = UIImage(data: imageData!)
+        cell.orderImageView.image = UIImage(data: orderDish.image!)
         cell.orderNameLabel.text = orderDish.name
         cell.orderCountLabel.text = "\(Int(orderDish.count)) p."
         cell.orderPriceLabel.text = "\(orderDish.price) $"
@@ -126,3 +123,11 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
 }
+
+//func updateBadgeNumber() {
+//    // get the number of items in the order
+//    let badgeValue = 0 < menuItems.count ? "\(menuItems.count)" : nil
+//    
+//    // assign the badge value to the order tab
+//    navigationController?.tabBarItem.badgeValue = badgeValue
+//}
