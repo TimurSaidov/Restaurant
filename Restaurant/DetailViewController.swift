@@ -13,7 +13,7 @@ class DetailViewController: UIViewController {
     var dish: Dish?
     var imagesDictionary: [String: UIImage]?
     var countStepperValue: Int = 0
-    var count: Int = 1
+    var dishCount: Int = 1
     var price: Int = 0
     
     @IBOutlet weak var dishImageView: UIImageView!
@@ -26,14 +26,14 @@ class DetailViewController: UIViewController {
     
     @IBAction func addCountButton(_ sender: UIStepper) {
         if Int(countStepper.value) > countStepperValue { // Если нажат "+", то countStepper.value += 1; если нажат "-", то countStepper.value -= 1
-            count += 1
-            countLabel.text = "\(count) p."
+            dishCount += 1
+            countLabel.text = "\(dishCount) p."
             price += dish!.price
             dishPriceLabel.text = "\(Double(price)) $"
             countStepperValue += 1
         } else {
-            count -= 1
-            countLabel.text = "\(count) p."
+            dishCount -= 1
+            countLabel.text = "\(dishCount) p."
             price -= dish!.price
             dishPriceLabel.text = "\(Double(price)) $"
             countStepperValue -= 1
@@ -45,6 +45,20 @@ class DetailViewController: UIViewController {
             self.addToOrderButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             self.addToOrderButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
+        
+        guard let dish = dish else { return }
+        
+        let orderDish = OrderDish(context: CoreDataManager.shared.managedObjectContext)
+        orderDish.name = dish.name
+        orderDish.aboutText = dish.description
+        orderDish.id = Double(dish.id)
+        orderDish.price = Double(price)
+        orderDish.category = dish.category
+        orderDish.count = Double(dishCount)
+        
+        CoreDataManager.shared.saveContext()
+        
+        // сообщение о том, что блюдо добавлено в корзину
     }
     
     override func viewDidLoad() {
