@@ -18,6 +18,8 @@ class DetailViewController: UIViewController {
     var price: Int = 0
     var orderDishes: [OrderDish] = []
     
+    var delegate: AddToOrderDelegate?
+    
     @IBOutlet weak var dishImageView: UIImageView!
     @IBOutlet weak var dishNameLabel: UILabel!
     @IBOutlet weak var dishPriceLabel: UILabel!
@@ -96,18 +98,17 @@ class DetailViewController: UIViewController {
         alertController.addAction(ok)
         present(alertController, animated: true, completion: nil)
         
-        dishCount = 1
-        price = dish.price
-        countStepper.value = 0
-        countStepperValue = 0
-        countLabel.text = "\(dishCount) p."
-        dishPriceLabel.text = "\(Double(price)) $"
+        delegate?.updateBadgeNumber()
+        
+        updateUI()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.largeTitleDisplayMode = .never
+        
+        setupDelegate()
         
         addToOrderButton.layer.cornerRadius = 5
 
@@ -136,5 +137,21 @@ class DetailViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    func setupDelegate() {
+        if let navController = tabBarController?.viewControllers?.last as? UINavigationController,
+            let orderViewController = navController.viewControllers.first as? OrderViewController {
+            delegate = orderViewController
+        }
+    }
+    
+    func updateUI() {
+        dishCount = 1
+        price = dish!.price
+        countStepper.value = 0
+        countStepperValue = 0
+        countLabel.text = "\(dishCount) p."
+        dishPriceLabel.text = "\(Double(price)) $"
     }
 }

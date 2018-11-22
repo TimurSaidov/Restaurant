@@ -15,6 +15,8 @@ class CategoriesTableViewController: UITableViewController {
     var menuArray: [Dish]?
     var imagesDictionary: [String: Data]?
     
+    var delegate: AddToOrderDelegate?
+    
     let activityIndicator = UIActivityIndicatorView(style: .gray)
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
@@ -50,6 +52,9 @@ class CategoriesTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         }
+        
+        setupDelegate()
+        delegate?.updateBadgeNumber()
     }
 
     // MARK: - Table view data source
@@ -114,6 +119,13 @@ class CategoriesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "Segue", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func setupDelegate() {
+        if let navController = tabBarController?.viewControllers?.last as? UINavigationController,
+            let orderViewController = navController.viewControllers.first as? OrderViewController {
+            delegate = orderViewController
+        }
     }
 
     // MARK: - Navigation

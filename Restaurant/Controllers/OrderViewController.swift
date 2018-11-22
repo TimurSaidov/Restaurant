@@ -9,11 +9,16 @@
 import UIKit
 import CoreData
 
+protocol AddToOrderDelegate {
+    func updateBadgeNumber()
+}
+
 class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var orderDishes: [OrderDish] = []
     var dictionaryOfDataImages: [String: Data] = [:]
     var price: Double = 0
+    var count: Double = 0
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var submitButton: UIButton!
@@ -102,7 +107,7 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Do you really want to remove the dish from the order?", message: nil, preferredStyle: .alert)
             
             let delete = UIAlertAction(title: "Delete", style: .destructive) { (action) in
                 let orderDish = self.orderDishes[indexPath.row]
@@ -123,9 +128,17 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 for orderDish in self.orderDishes {
                     self.price += orderDish.price
+                    self.count += orderDish.count
                 }
                 self.submitButton.setTitle("Submit the order for \(self.price) $", for: .normal)
                 self.price = 0
+                let badgeValue = self.count == 0 ? nil : self.count
+                if let badgeValue = badgeValue {
+                    self.navigationController?.tabBarItem.badgeValue = "\(Int(badgeValue))"
+                } else {
+                    self.navigationController?.tabBarItem.badgeValue = nil
+                }
+                self.count = 0
             }
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
@@ -137,10 +150,31 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 }
 
-//func updateBadgeNumber() {
-//    // get the number of items in the order
-//    let badgeValue = 0 < menuItems.count ? "\(menuItems.count)" : nil
-//    
-//    // assign the badge value to the order tab
-//    navigationController?.tabBarItem.badgeValue = badgeValue
-//}
+extension OrderViewController: AddToOrderDelegate {
+    func updateBadgeNumber() {
+        var updateOrderDishes: [OrderDish] = []
+        
+        let request = NSFetchRequest<OrderDish>(entityName: "OrderDish")
+        
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        request.sortDescriptors = [sortDescriptor]
+        
+        do {
+            updateOrderDishes = try CoreDataManager.shared.managedObjectContext.fetch(request)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        for orderDish in updateOrderDishes {
+            count += orderDish.count
+        }
+        
+        let badgeValue = count == 0 ? nil : count
+        if let badgeValue = badgeValue {
+            navigationController?.tabBarItem.badgeValue = "\(Int(badgeValue))"
+        } else {
+            navigationController?.tabBarItem.badgeValue = nil
+        }
+        count = 0
+    }
+}
