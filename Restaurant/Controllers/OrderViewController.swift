@@ -21,6 +21,7 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var count: Double = 0
     var priceForPrepare: Double = 0
     var displayValueBadgeWhileWillAppear: Bool = false
+    var numberOfOrder: Int?
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var submitButton: UIButton!
@@ -46,6 +47,8 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        numberOfOrder = UserDefaults.standard.object(forKey: "NumberOfOrder") as? Int
         
         submitButton.layer.cornerRadius = 5
         
@@ -185,7 +188,17 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
             guard let navigationController = segue.destination as? UINavigationController else { return }
             guard let dvc = navigationController.viewControllers.first! as? OrderDetailViewController else { return }
             
+            if let number = numberOfOrder {
+                dvc.number = number + 1
+                numberOfOrder! += 1
+            } else {
+                dvc.number = 1
+                numberOfOrder = 1
+            }
             dvc.price = priceForPrepare
+            
+            UserDefaults.standard.set(numberOfOrder, forKey: "NumberOfOrder")
+            UserDefaults.standard.synchronize()
         }
     }
 }
