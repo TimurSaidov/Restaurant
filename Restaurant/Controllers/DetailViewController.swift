@@ -91,14 +91,17 @@ class DetailViewController: UIViewController {
         
         CoreDataManager.shared.saveContext()
         
+        let alertController = UIAlertController(title: "Added \(dishCount) \(dish.name)", message: nil, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(ok)
+        present(alertController, animated: true, completion: nil)
+        
         dishCount = 1
         price = dish.price
         countStepper.value = 0
         countStepperValue = 0
         countLabel.text = "\(dishCount) p."
         dishPriceLabel.text = "\(Double(price)) $"
-        
-        // сообщение о том, что блюдо добавлено в корзину
     }
     
     override func viewDidLoad() {

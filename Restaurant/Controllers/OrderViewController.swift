@@ -37,8 +37,6 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        print(Thread.current)
-        
         let request = NSFetchRequest<OrderDish>(entityName: "OrderDish")
         
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
