@@ -13,6 +13,7 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     var orderDishes: [OrderDish] = []
     var dictionaryOfDataImages: [String: Data] = [:]
+    var price: Double = 0
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var submitButton: UIButton!
@@ -36,6 +37,8 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        print(Thread.current)
+        
         let request = NSFetchRequest<OrderDish>(entityName: "OrderDish")
         
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
@@ -56,6 +59,12 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
             varningLabel.isHidden = false
             submitButton.isHidden = true
         }
+        
+        for orderDish in orderDishes {
+            price += orderDish.price
+        }
+        submitButton.setTitle("Submit the order for \(price) $", for: .normal)
+        price = 0
     }
     
     // MARK: - Table view data source
@@ -113,6 +122,12 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     self.varningLabel.isHidden = false
                     self.submitButton.isHidden = true
                 }
+                
+                for orderDish in self.orderDishes {
+                    self.price += orderDish.price
+                }
+                self.submitButton.setTitle("Submit the order for \(self.price) $", for: .normal)
+                self.price = 0
             }
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             

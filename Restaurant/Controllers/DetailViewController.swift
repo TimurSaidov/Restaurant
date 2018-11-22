@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DetailViewController: UIViewController {
     
@@ -15,6 +16,7 @@ class DetailViewController: UIViewController {
     var countStepperValue: Int = 0
     var dishCount: Int = 1
     var price: Int = 0
+    var orderDishes: [OrderDish] = []
     
     @IBOutlet weak var dishImageView: UIImageView!
     @IBOutlet weak var dishNameLabel: UILabel!
@@ -48,17 +50,53 @@ class DetailViewController: UIViewController {
         
         guard let dish = dish else { return }
         
-        let orderDish = OrderDish(context: CoreDataManager.shared.managedObjectContext)
-        orderDish.name = dish.name
-        orderDish.aboutText = dish.description
-        orderDish.id = Double(dish.id)
-        orderDish.price = Double(price)
-        orderDish.category = dish.category
-        orderDish.count = Double(dishCount)
-        let imageData = imagesDictionary!["\(dish.name)"]
-        orderDish.image = imageData
+        var equalDish: Bool = false
+        var orderDish: OrderDish?
+        
+        for orderDishInOrderDishes in orderDishes {
+            if dish.id == Int(orderDishInOrderDishes.id) {
+                equalDish = true
+                orderDish = orderDishInOrderDishes
+                break
+            }
+        }
+        
+        if equalDish {
+            let countOrderDish = orderDish!.count
+            let priceOrderDish = orderDish!.price
+            CoreDataManager.shared.managedObjectContext.delete(orderDish!)
+            
+            let newOrderDish = OrderDish(context: CoreDataManager.shared.managedObjectContext)
+            
+            newOrderDish.name = dish.name
+            newOrderDish.aboutText = dish.description
+            newOrderDish.id = Double(dish.id)
+            newOrderDish.price = Double(price) + priceOrderDish
+            newOrderDish.category = dish.category
+            newOrderDish.count = Double(dishCount) + countOrderDish
+            let imageData = imagesDictionary!["\(dish.name)"]
+            newOrderDish.image = imageData
+        } else {
+            let newOrderDish = OrderDish(context: CoreDataManager.shared.managedObjectContext)
+            
+            newOrderDish.name = dish.name
+            newOrderDish.aboutText = dish.description
+            newOrderDish.id = Double(dish.id)
+            newOrderDish.price = Double(price)
+            newOrderDish.category = dish.category
+            newOrderDish.count = Double(dishCount)
+            let imageData = imagesDictionary!["\(dish.name)"]
+            newOrderDish.image = imageData
+        }
         
         CoreDataManager.shared.saveContext()
+        
+        dishCount = 1
+        price = dish.price
+        countStepper.value = 0
+        countStepperValue = 0
+        countLabel.text = "\(dishCount) p."
+        dishPriceLabel.text = "\(Double(price)) $"
         
         // сообщение о том, что блюдо добавлено в корзину
     }
@@ -79,6 +117,21 @@ class DetailViewController: UIViewController {
             price = dish.price
             dishPriceLabel.text = "\(Double(price)) $" // String(format: "$%.2f", price)
             dishDescriptionTextView.text = dish.description
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        let request = NSFetchRequest<OrderDish>(entityName: "OrderDish")
+        
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        request.sortDescriptors = [sortDescriptor]
+        
+        do {
+            orderDishes = try CoreDataManager.shared.managedObjectContext.fetch(request)
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }
