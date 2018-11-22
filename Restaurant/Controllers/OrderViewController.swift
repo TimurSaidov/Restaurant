@@ -19,16 +19,29 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var dictionaryOfDataImages: [String: Data] = [:]
     var price: Double = 0
     var count: Double = 0
+    var priceForPrepare: Double = 0
+    var displayValueBadgeWhileWillAppear: Bool = false
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var varningLabel: UILabel!
+    
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
+        displayValueBadgeWhileWillAppear = true
+    }
     
     @IBAction func submitButtonPressed(_ sender: UIButton) {
         UIView.animate(withDuration: 0.3) {
             self.submitButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             self.submitButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
+        
+        for orderDish in orderDishes {
+            CoreDataManager.shared.managedObjectContext.delete(orderDish)
+        }
+        CoreDataManager.shared.saveContext()
+        
+        performSegue(withIdentifier: "OrderDetailSegue", sender: nil)
     }
     
     override func viewDidLoad() {
@@ -65,9 +78,24 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         for orderDish in orderDishes {
             price += orderDish.price
+            count += orderDish.count
         }
         submitButton.setTitle("Submit the order for \(price) $", for: .normal)
+        priceForPrepare = price
         price = 0
+        
+        if displayValueBadgeWhileWillAppear {
+            print("Count badgeValue after unwindSegue!")
+            
+            let badgeValue = count == 0 ? nil : count
+            if let badgeValue = badgeValue {
+                self.navigationController?.tabBarItem.badgeValue = "\(Int(badgeValue))"
+            } else {
+                self.navigationController?.tabBarItem.badgeValue = nil
+            }
+            displayValueBadgeWhileWillAppear = false
+        }
+        count = 0
     }
     
     // MARK: - Table view data source
@@ -131,6 +159,7 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     self.count += orderDish.count
                 }
                 self.submitButton.setTitle("Submit the order for \(self.price) $", for: .normal)
+                self.priceForPrepare = self.price
                 self.price = 0
                 let badgeValue = self.count == 0 ? nil : self.count
                 if let badgeValue = badgeValue {
@@ -148,8 +177,20 @@ class OrderViewController: UIViewController, UITableViewDelegate, UITableViewDat
             present(alertController, animated: true, completion: nil)
         }
     }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "OrderDetailSegue" {
+            guard let navigationController = segue.destination as? UINavigationController else { return }
+            guard let dvc = navigationController.viewControllers.first! as? OrderDetailViewController else { return }
+            
+            dvc.price = priceForPrepare
+        }
+    }
 }
 
+// badgeValue считается в 4-х случаях: 1) при загрузке приложения (в CategoriesTableViewController во viewDidLoad); 2) при добавлении блюда в заказ (в DetailViewController в @IBAction func addToOrderButtonPressed()); 3) при удалении блюда из заказа (в OrderViewController в func tableView(commit editingStyle)); 4) по возвращении с OrderDetailViewController при unwindSegue (в OrderViewController во viewWillAppear).
 extension OrderViewController: AddToOrderDelegate {
     func updateBadgeNumber() {
         var updateOrderDishes: [OrderDish] = []
